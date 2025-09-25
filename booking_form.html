@@ -2,95 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Garuda Tours & Travels - Vehicle Booking</title>
+  <title>Vehicle Booking Form</title>
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      margin: 30px; 
-      max-width: 700px; 
-      background: #f4f4f9;
-    }
-    h2, h3 { 
-      color: #333; 
-      text-align: center; 
-    }
-    form { 
-      margin-top: 20px; 
-      background: #fff; 
-      padding: 20px; 
-      border-radius: 8px; 
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    label { 
-      display: block; 
-      margin-top: 15px; 
-      font-weight: bold; 
-    }
-    input, textarea { 
-      width: 100%; 
-      padding: 8px; 
-      margin-top: 5px; 
-      border: 1px solid #ccc; 
-      border-radius: 4px; 
-      font-size: 14px;
-    }
-    .terms { 
-      background: #f9f9f9; 
-      padding: 15px; 
-      margin-top: 20px; 
-      border: 1px solid #ddd; 
-      border-radius: 6px;
-    }
-    button { 
-      margin-top: 20px; 
-      padding: 12px 20px; 
-      font-size: 16px; 
-      cursor: pointer; 
-      border: none; 
-      border-radius: 6px; 
-      background: #007bff; 
-      color: #fff;
-      width: 100%;
-    }
+    body { font-family: Arial, sans-serif; margin: 30px; max-width: 700px; }
+    h2 { color: #333; text-align: center; }
+    form { margin-top: 20px; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    .terms { background: #f9f9f9; padding: 15px; margin-top: 20px; border: 1px solid #ddd; border-radius: 6px; }
+    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 6px; background: #007bff; color: #fff; width: 100%; }
     button:hover { background: #0056b3; }
-    .output { 
-      margin-top: 30px; 
-      padding: 20px; 
-      border: 1px solid #444; 
-      background: #fff; 
-      display: none; 
-      border-radius: 8px;
-    }
-    .logo { 
-      display: block; 
-      margin: 0 auto 15px auto; 
-      max-width: 140px; 
-      height: auto;
-    }
+    .output { margin-top: 30px; padding: 20px; border: 2px solid #444; background: #fff; display: none; border-radius: 8px; }
+    .pdf-box { border: 1px solid #000; padding: 20px; border-radius: 8px; }
+    .pdf-header { background: #007bff; color: #fff; padding: 10px; text-align: center; border-radius: 6px; margin-bottom: 20px; }
+    .pdf-row { margin-bottom: 10px; }
+    .pdf-row span.label { font-weight: bold; display: inline-block; width: 150px; }
+    .logo { display: block; margin: 0 auto 15px auto; max-width: 120px; }
   </style>
 </head>
 <body>
-  <!-- Company Logo -->
-  <img src="logo.png" alt="Garuda Tours & Travels" class="logo">
+  <img src="logo.png" alt="Transport Logo" class="logo">
   <h2>Vehicle Booking Form</h2>
   <p><strong>Booking ID:</strong> <span id="bookingId"></span></p>
-  
+
   <form id="bookingForm">
     <label>Name:</label>
     <input type="text" name="name" required>
-
     <label>Contact No:</label>
     <input type="text" name="contact" required>
-
     <label>Pickup Point:</label>
     <input type="text" name="pickup" required>
-
+    <label>Pickup Date:</label>
+    <input type="date" name="pickupDate" required>
+    <label>Pickup Time:</label>
+    <input type="time" name="pickupTime" required>
     <label>Dropping Point:</label>
     <input type="text" name="drop" required>
-
     <label>No. of Passengers:</label>
     <input type="number" name="passengers" min="1" required>
-
     <label>Contact Address:</label>
     <textarea name="address" rows="3" required></textarea>
 
@@ -106,62 +55,68 @@
         <li>For any queries or assistance, customer may reach out.</li>
         <li>In case of vehicle breakdown, an alternative vehicle will be arranged.</li>
       </ul>
-      <label>
-        <input type="checkbox" required> I agree to the above terms & conditions
-      </label>
+      <label><input type="checkbox" required> I agree to the above terms & conditions</label>
     </div>
 
     <button type="submit">Generate Booking Confirmation</button>
   </form>
 
   <div class="output" id="confirmationBox">
-    <img src="logo.png" alt="Garuda Tours & Travels" class="logo">
-    <h3>Booking Confirmation</h3>
-    <p><strong>Booking ID:</strong> <span id="cBookingId"></span></p>
-    <p><strong>Name:</strong> <span id="cName"></span></p>
-    <p><strong>Contact No:</strong> <span id="cContact"></span></p>
-    <p><strong>Pickup Point:</strong> <span id="cPickup"></span></p>
-    <p><strong>Dropping Point:</strong> <span id="cDrop"></span></p>
-    <p><strong>No. of Passengers:</strong> <span id="cPassengers"></span></p>
-    <p><strong>Contact Address:</strong> <span id="cAddress"></span></p>
-    <hr>
-    <p><strong>Payment Terms & Conditions:</strong></p>
-    <ul>
-      <li>Advance payment: Rs. 20,000/-</li>
-      <li>After vehicle reaches pickup point: Rs. 20,000/-</li>
-      <li>While starting return journey: Rs. 10,000/-</li>
-    </ul>
-    <p><strong>Notes:</strong> Queries/support available. Alternative vehicle in case of breakdown.</p>
-    <p><strong>Authorised Signatory</strong></p>
-    <button onclick="window.print()">Print / Save as PDF</button>
+    <div class="pdf-box" id="pdfContent">
+      <div class="pdf-header">
+        <img src="logo.png" alt="Transport Logo" class="logo">
+        <h3>Booking Confirmation</h3>
+      </div>
+      <div class="pdf-row"><span class="label">Booking ID:</span> <span id="cBookingId"></span></div>
+      <div class="pdf-row"><span class="label">Name:</span> <span id="cName"></span></div>
+      <div class="pdf-row"><span class="label">Contact No:</span> <span id="cContact"></span></div>
+      <div class="pdf-row"><span class="label">Pickup Point:</span> <span id="cPickup"></span></div>
+      <div class="pdf-row"><span class="label">Pickup Date:</span> <span id="cPickupDate"></span></div>
+      <div class="pdf-row"><span class="label">Pickup Time:</span> <span id="cPickupTime"></span></div>
+      <div class="pdf-row"><span class="label">Dropping Point:</span> <span id="cDrop"></span></div>
+      <div class="pdf-row"><span class="label">No. of Passengers:</span> <span id="cPassengers"></span></div>
+      <div class="pdf-row"><span class="label">Contact Address:</span> <span id="cAddress"></span></div>
+      <hr>
+      <div class="pdf-row"><strong>Payment Terms & Conditions:</strong></div>
+      <ul>
+        <li>Advance payment: Rs. 20,000/-</li>
+        <li>After vehicle reaches pickup point: Rs. 20,000/-</li>
+        <li>While starting return journey: Rs. 10,000/-</li>
+      </ul>
+      <div class="pdf-row"><strong>Notes:</strong> Queries/support available. Alternative vehicle in case of breakdown.</div>
+      <div class="pdf-row"><strong>Authorised Signatory</strong></div>
+    </div>
   </div>
 
+  <!-- html2pdf.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
   <script>
-    // Generate booking ID on load
-    function generateBookingId() {
-      const now = new Date();
-      return "BKG" + now.getFullYear() + 
-             (now.getMonth()+1).toString().padStart(2,'0') + 
-             now.getDate().toString().padStart(2,'0') + "-" + 
-             now.getHours().toString().padStart(2,'0') + 
-             now.getMinutes().toString().padStart(2,'0') + 
-             now.getSeconds().toString().padStart(2,'0');
-    }
-    const bookingId = generateBookingId();
+    const bookingId = "BKG" + new Date().toISOString().replace(/[-:.]/g,"").slice(0,15);
     document.getElementById("bookingId").textContent = bookingId;
 
-    // Handle form submission
     document.getElementById("bookingForm").addEventListener("submit", function(e){
       e.preventDefault();
       document.getElementById("cBookingId").textContent = bookingId;
       document.getElementById("cName").textContent = this.name.value;
       document.getElementById("cContact").textContent = this.contact.value;
       document.getElementById("cPickup").textContent = this.pickup.value;
+      document.getElementById("cPickupDate").textContent = this.pickupDate.value;
+      document.getElementById("cPickupTime").textContent = this.pickupTime.value;
       document.getElementById("cDrop").textContent = this.drop.value;
       document.getElementById("cPassengers").textContent = this.passengers.value;
       document.getElementById("cAddress").textContent = this.address.value;
+
       document.getElementById("confirmationBox").style.display = "block";
       this.style.display = "none";
+
+      // Generate PDF
+      const element = document.getElementById("pdfContent");
+      html2pdf().set({
+        margin: 10,
+        filename: bookingId + "_confirmation.pdf",
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+      }).from(element).save();
     });
   </script>
 </body>
